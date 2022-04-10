@@ -1,45 +1,38 @@
-import { useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
+import { VFC } from 'react';
+import './App.css';
+import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom';
 
-function App() {
-  const [count, setCount] = useState(0)
+const Hoge = () => {
+  return <h1>Hoge</h1>;
+};
 
+const Home = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
+    <div>
+      <h1>Home</h1>
+      <NavLink to={'/about'}>to About Component</NavLink>
     </div>
-  )
-}
+  );
+};
 
-export default App
+const About = () => {
+  return (
+    <div>
+      <h1>About</h1>
+      <NavLink to={'/'}>to Home</NavLink>
+    </div>
+  );
+};
+
+const App: VFC = () => {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+      </Routes>
+    </BrowserRouter>
+  );
+};
+
+export default App;
