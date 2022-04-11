@@ -1,24 +1,29 @@
-import { useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
+import { useState } from 'react';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
 
-function App() {
-  const [count, setCount] = useState(0)
+import './App.css';
+import Child from './Component/Child';
+
+const queryClient = new QueryClient();
+
+const App = () => {
+  const [isOpenChild, setIsChild] = useState(true);
+
+  const Toggle = () => (
+    // ボタンを押してコンポーネントがアンマウント後3秒後にキャッシュが消える
+    <button onClick={() => setIsChild(!isOpenChild)}>
+      {isOpenChild ? 'unmount' : 'mount'}
+    </button>
+  );
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-        <p>
+    <QueryClientProvider client={queryClient}>
+      <div className="App">
+        <header className="App-header">
+          <h2>React Query!!</h2>
+          <Toggle />
+          {isOpenChild ? <Child /> : null}
           <a
             className="App-link"
             href="https://reactjs.org"
@@ -27,19 +32,11 @@ function App() {
           >
             Learn React
           </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
-    </div>
-  )
-}
+        </header>
+      </div>
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
+  );
+};
 
-export default App
+export default App;
